@@ -1,0 +1,4 @@
+{"fipe_marca": "GM - Chevrolet", "name": "ONIX HATCH Joy 1.0 8V Flex 5p Mec.", "marca": "CHEVROLET", "key": "onix-7691", "id": "7691", "fipe_name": "ONIX HATCH Joy 1.0 8V Flex 5p Mec."},
+{"fipe_marca": "GM - Chevrolet", "name": "ONIX HATCH LS 1.0 8V FlexPower 5p Mec.", "marca": "CHEVROLET", "key": "onix-6231", "id": "6231", "fipe_name": "ONIX HATCH LS 1.0 8V FlexPower 5p Mec."},
+{"fipe_marca": "GM - Chevrolet", "name": "ONIX HATCH LT 1.0 8V FlexPower 5p Mec.", "marca": "CHEVROLET", "key": "onix-6232", "id": "6232", "fipe_name": "ONIX HATCH LT 1.0 8V FlexPower 5p Mec."},
+{"fipe_marca": "GM - Chevrolet", "name": "ONIX HATCH LT 1.4 8V FlexPower 5p Mec.", "marca": "CHEVROLET", "key": "onix-6233", "id": "6233", "fipe_name": "ONIX HATCH LT 1.4 8V FlexPower 5p Mec."}
