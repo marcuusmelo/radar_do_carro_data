@@ -1,0 +1,56 @@
+marca,id_modelo,name_modelo
+Chevrolet-GM,cobalt,Cobalt
+Chevrolet-GM,cruze_sedan,Cruze Sedan
+Chevrolet-GM,onix,Onix
+Chevrolet-GM,prisma,Prisma
+Chevrolet-GM,s10,S10
+Chevrolet-GM,spin,Spin
+Chevrolet-GM,tracker,Tracker
+Fiat,argo,Argo
+Fiat,cronos,Cronos
+Fiat,mobi,Mobi
+Fiat,siena,Siena
+Fiat,strada,Strada
+Fiat,toro,Toro
+Fiat,uno,Uno
+Ford,ecosport,Ecosport
+Ford,fiesta,Fiesta
+Ford,focus,Focus
+Ford,fusion,Fusion
+Ford,ka,Ka
+Ford,ka_sedan,Ka Sedan
+Ford,ranger,Ranger
+Honda,city,City
+Honda,civic,Civic
+Honda,fit,Fit
+Honda,hr-v,HR-V
+Honda,wr-v,WR-V
+Hiunday,creta,Creta
+Hiunday,hb20,HB20
+Hiunday,hb20s,HB20S
+Jeep,compass,Compass
+Jeep,renegade,Renegade
+Nissan,kicks,Kicks
+Nissan,sentra,Sentra
+Nissan,versa,Versa
+Renault,captur,Captur
+Renault,duster,Duster
+Renault,kwid,Kwid
+Renault,logan,Logan
+Renault,sandero,Sandero
+Toyota,corolla,Corolla
+Toyota,etios_hatch,Etios Hatch
+Toyota,etios_sedan,Etios Sedan
+Toyota,hilux,Hilux
+Toyota,yaris_hatch,Yaris Hatch
+Toyota,yaris_sedan,Yaris Sedan
+VW,amarok,Amarok
+VW,fox,Fox/Cross Fox
+VW,gol,Gol
+VW,golf,Golf
+VW,jetta,Jetta
+VW,polo,Polo
+VW,saveiro,Saveiro
+VW,up,Up
+VW,virtus,Virtus
+VW,voyage,Voyage
