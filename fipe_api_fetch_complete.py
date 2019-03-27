@@ -13,7 +13,7 @@ def format_ano(ano):
     return ano
 
 def format_preco(preco):
-    return preco.replace('R$ ', '').replace(',00', '')
+    return preco.replace('R$ ', '').replace(',00', '').replace('.', '')
 
 fipe_api_base_url = 'http://fipeapi.appspot.com/api/1/carros/veiculo/{0}/{1}/{2}.json'
 
