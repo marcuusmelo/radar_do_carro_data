@@ -4,7 +4,8 @@ import pandas as pd
 import urllib2
 from urlgrabber.keepalive import HTTPHandler
 from bs4 import BeautifulSoup
-from generic_functions import check_if_folder_exists_than_crete
+from general.file_management import check_if_folder_exists_than_crete
+from general.car_attributes import get_car_age, get_car_power
 from fipe_api_fetch import get_fipe_table
 
 
@@ -44,27 +45,6 @@ def get_ad_date(ad_soup):
     ad_date_complete = ad_date_day + '-' + ad_date_month + '-' + ad_date_year + ' ' + ad_date_time
 
     return ad_date_complete
-
-
-def get_car_age(car_year):
-    """ Get car age given its year and actual date """
-    this_year = datetime.now().year
-    car_age = this_year - int(car_year)
-
-    return car_age
-
-
-def get_car_power(car_model):
-    """ Get car power from model description """
-    car_power = ''
-    if '1.0' in car_model:
-        car_power = '1.0'
-    elif '1.4' in car_model:
-        car_power = '1.4'
-    elif '1.6' in car_model:
-        car_power = '1.6'
-
-    return car_power
 
 
 def get_preco_fipe(car_type, car_power, car_year):
@@ -197,7 +177,7 @@ def get_car_leads():
 
 if __name__ == "__main__":
     total_time = time.time()
-    
+
     st1 = time.time()
     FIPE_FILE = get_fipe_table()
     FIPE_DF = pd.read_csv(FIPE_FILE)

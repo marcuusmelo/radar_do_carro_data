@@ -667,7 +667,7 @@ renegade,29,7188,Renegade Sport 1.8 4x2 Flex 16V Aut.,"[u'32000-1', u'2019-1', u
 renegade,29,7189,Renegade Sport 1.8 4x2 Flex 16V Mec.,"[u'32000-1', u'2019-1', u'2018-1', u'2017-1', u'2016-1', u'2015-1']"
 renegade,29,7190,Renegade Sport 2.0 4x4 TB Diesel Aut.,"[u'2017-3', u'2016-3']"
 renegade,29,7191,Renegade Trailhawk 2.0 4x4 TB Diesel Aut,"[u'32000-3', u'2019-3', u'2018-3', u'2017-3', u'2016-3', u'2015-3']"
-renegade1-8,29,8407,Renegade1.8 4x2 Flex 16V Aut.(PCD),"[u'32000-1', u'2019-1', u'2018-1', u'2017-1', u'2016-1']"
+renegade,29,8407,Renegade1.8 4x2 Flex 16V Aut.(PCD),"[u'32000-1', u'2019-1', u'2018-1', u'2017-1', u'2016-1']"
 kicks,43,7669,KICKS Rio 2016 1.6 16V FlexStar 5p Aut.,[u'2017-1']
 kicks,43,8020,KICKS S 1.6 16V Flex 5p Aut.,"[u'32000-1', u'2019-1', u'2018-1']"
 kicks,43,7982,KICKS S 1.6 16V FlexStar 5p Mec.,"[u'32000-1', u'2019-1', u'2018-1']"
@@ -951,8 +951,6 @@ crossfox,59,7077,CROSSFOX  1.6 T. Flex 16V 5p,"[u'32000-1', u'2018-1', u'2017-1'
 crossfox,59,7078,CROSSFOX  I MOTION 1.6 T. Flex 16V 5p,"[u'2018-1', u'2017-1', u'2016-1', u'2015-1']"
 crossfox,59,2368,CROSSFOX 1.6 Mi Total Flex 8V 5p,"[u'2015-1', u'2014-1', u'2013-1', u'2012-1', u'2011-1', u'2010-1', u'2009-1', u'2008-1', u'2007-1', u'2006-1', u'2005-1']"
 crossfox,59,5983,CROSSFOX I MOTION 1.6 Mi T. Flex 8V 5p,"[u'2015-1', u'2014-1', u'2013-1']"
-eos,59,4857,EOS Cab. 2.0 Turbo FSI Tiptronic,"[u'2012-1', u'2011-1', u'2010-1', u'2009-1', u'2008-1']"
-eurovan,59,2369,Eurovan 2.4 Diesel,"[u'2000-3', u'1999-3', u'1998-3']"
 fox,59,5082,Fox 1.0 Mi Total Flex 8V 3p,"[u'2014-1', u'2013-1', u'2012-1', u'2011-1', u'2010-1']"
 fox,59,5083,Fox 1.0 Mi Total Flex 8V 5p,"[u'2014-1', u'2013-1', u'2012-1', u'2011-1', u'2010-1']"
 fox,59,5084,Fox 1.6 Mi I MOTION Total Flex 8V 5p,"[u'2014-1', u'2013-1', u'2012-1', u'2011-1', u'2010-1']"
