@@ -1,4 +1,5 @@
 import os
+import sys
 import requests
 import pandas as pd
 from datetime import date
@@ -20,7 +21,7 @@ def format_preco(preco):
     return preco.replace('R$ ', '').replace(',00', '').replace('.', '')
 
 
-def get_new_fipe_table(output_file):
+def get_new_fipe_table(output_file, year_min):
     fetch_date = date.today()
     fipe_api_base_url = 'http://fipeapi.appspot.com/api/1/carros/veiculo/{0}/{1}/{2}.json'
 
@@ -38,9 +39,10 @@ def get_new_fipe_table(output_file):
     counter = 0
     for fipe_index, fipe_attributes in enumerate(fipe_attrib_list):
         counter += 1
-        print counter, fipe_attributes
+        # print counter, fipe_attributes
+        date_to_fetch_list = [x for x in eval(fipe_attributes[4]) if x >= year_min]
 
-        for date_to_fetch in eval(fipe_attributes[4]):
+        for date_to_fetch in date_to_fetch_list:
             fetch_data_attempts = 0
             fetch_url = fipe_api_base_url.format(fipe_attributes[1],
                                                  fipe_attributes[2],
@@ -81,7 +83,7 @@ def get_new_fipe_table(output_file):
     fipe_attrib_file.close()
 
 
-def get_fipe_table():
+def get_fipe_table(year_min='2009'):
     """ Get fipe table for Hiunday HB20 """
     today_date = str(date.today())[:7]
     output_path = '/Users/marcusmelo/Desktop/projects/storage_car_dealer_br/'
@@ -90,7 +92,8 @@ def get_fipe_table():
 
     if not check_if_file_exists(output_file):
         check_if_folder_exists_than_crete(output_path)
-        get_new_fipe_table(output_file)
+        get_new_fipe_table(output_file, year_min)
+
     else:
         print 'File Already Exists: ', output_file
 
