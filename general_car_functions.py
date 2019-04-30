@@ -46,8 +46,10 @@ def get_car_transmission(car_model):
 def get_car_model_code_fixed(car_model_code):
     """ Fix car codes to olx standard """
     car_fix_dict = {
-        'ka+':  'ka-mais',
-        'renegade1-8': 'renegade'
+        'ka+': 'ka-mais',
+        'renegade1-8': 'renegade',
+        'ka-mais': 'ka+',
+
     }
 
     if car_model_code in car_fix_dict.keys():
