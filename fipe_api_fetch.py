@@ -9,6 +9,7 @@ import csv
 
 from general_car_functions import get_car_power, get_car_transmission, get_brand_from_id
 from general_file_management import check_if_file_exists, check_if_folder_exists_than_crete
+from general_db_utils import load_file_then_move, update_collection_and_drop_old
 
 
 def format_ano(ano):
@@ -56,10 +57,10 @@ def get_new_fipe_table(output_file, year_min):
                     modelo_fipe_data = [
                         get_brand_from_id(fipe_attributes[1]),
                         fipe_attributes[0].upper(),
-                        fipe_detail_json['veiculo'].upper(),
+                        fipe_detail_json['name'].upper(),
                         format_ano(fipe_detail_json['ano_modelo']),
-                        get_car_power(fipe_detail_json['veiculo']),
-                        get_car_transmission(fipe_detail_json['veiculo']),
+                        get_car_power(fipe_detail_json['name']),
+                        get_car_transmission(fipe_detail_json['name']),
                         format_preco(fipe_detail_json['preco']),
                         fetch_date
                     ]
@@ -84,22 +85,24 @@ def get_new_fipe_table(output_file, year_min):
 
 
 def get_fipe_table(year_min='2009'):
-    """ Get fipe table for Hiunday HB20 """
+    """ Get fipe table """
     today_date = str(date.today())[:7]
-    output_path = '/Users/marcusmelo/Desktop/projects/storage_car_dealer_br/'
+    output_path = '/Users/marcusmelo/Desktop/projects/storage_car_dealer_br/fipe_upload/'
 
     output_file = output_path + 'tabela_fipe_' + today_date + '.csv'
+    loaded_file = output_file.replace('upload', 'loaded')
 
-    if not check_if_file_exists(output_file):
+    if not check_if_file_exists(loaded_file):
         check_if_folder_exists_than_crete(output_path)
         get_new_fipe_table(output_file, year_min)
-
+        load_file_then_move(output_file, 'fipe_interm')
+        update_collection_and_drop_old('radar_do_carro_main_fipefinal', 'fipe_interm')
     else:
-        print 'File Already Exists: ', output_file
+        print 'File Already Exists: ', loaded_file
 
-    print 'DONE!', output_file
+    print 'DONE!', loaded_file
 
-    return output_file
+    return loaded_file
 
 
 if __name__ == '__main__':

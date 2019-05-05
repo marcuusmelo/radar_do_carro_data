@@ -1,3 +1,4 @@
+import sys
 import time
 from random import randint
 from datetime import datetime, timedelta
@@ -10,7 +11,11 @@ from urlgrabber.keepalive import HTTPHandler
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import pandas as pd
+from os import listdir
+from os.path import isfile, join
 
+from general_db_utils import load_file_then_move, remove_duplicates_from_collection, \
+                             active_id_db_cleanup
 from general_car_functions import get_car_power, get_car_transmission, \
                                   get_car_model_code_fixed, get_brand_from_model
 from fipe_api_fetch import get_fipe_table
@@ -18,16 +23,20 @@ from fipe_api_fetch import get_fipe_table
 
 class OLXScrape():
 
-    def __init__(self):
+    def __init__(self, days_to_fetch=30):
         keepalive_handler = HTTPHandler()
         opener = urllib2.build_opener(keepalive_handler)
         urllib2.install_opener(opener)
 
         fipe_path = get_fipe_table()
 
+        self.target_collection = 'radar_do_carro_main_caraddata'
+
+        self.days_to_fetch = int(days_to_fetch)
+
         self.tabela_fipe_df = pd.read_csv(fipe_path, dtype=str)
         self.model_list_fipe = [x.upper() for x in self.tabela_fipe_df['modelo_nome'].tolist()]
-        self.storage_dir = '/Users/marcusmelo/Desktop/projects/storage_car_dealer_br/'
+        self.storage_dir = '/Users/marcusmelo/Desktop/projects/storage_car_dealer_br/olx_upload/'
         self.output_filename = 'olx_scrape_{0}_{1}_{2}.csv'
         self.today_date = datetime.now()
         self.file_date = self.today_date.strftime('%Y%m%d%H%M%S')
@@ -118,10 +127,8 @@ class OLXScrape():
         return ad_info_list
 
 
-    def get_pages_to_fetch(self, ad_info_list, last_fetch_date=None):
-        if last_fetch_date is None:
-            # If not specified, fetch only the ads created in the last 6 months
-            last_fetch_date = self.today_date - timedelta(days=180)
+    def get_pages_to_fetch(self, ad_info_list):
+        last_fetch_date = self.today_date - timedelta(days=self.days_to_fetch)
 
         pages_to_fetch_list = []
         for ad_info_element in ad_info_list:
@@ -157,7 +164,7 @@ class OLXScrape():
 
 
     def get_fipe_price(self, marca, modelo_code, modelo_nome, ano, potencia, transm):
-        modelo_code = get_car_model_code_fixed(modelo_code)
+        modelo_code = get_car_model_code_fixed(modelo_code.lower())
         preco_fipe_modelo, preco_fipe_base_min, preco_fipe_base_max = '', '', ''
 
         closest_names_list = get_close_matches(modelo_nome, self.model_list_fipe)
@@ -230,8 +237,8 @@ class OLXScrape():
                 car_ad_phone = self.get_phone_number()
 
                 details_formatted = [
-                    car_brand,
-                    car_model,
+                    car_brand.upper(),
+                    car_model.upper(),
                     car_model_name,
                     car_year,
                     car_km,
@@ -242,10 +249,10 @@ class OLXScrape():
                     car_fipe_min,
                     car_fipe_max,
                     car_ad_phone,
-                    ad_date,
+                    ad_date.strftime('%Y-%m-%d'),
                     ad_id,
                     ad_link,
-                    self.today_date
+                    self.today_date.strftime('%Y-%m-%d')
                 ]
 
                 time.sleep(randint(1, 2))
@@ -260,6 +267,15 @@ class OLXScrape():
         return olx_data
 
 
+    def run_olx_ingest(self):
+        files_to_upload = [join(self.storage_dir, f) for f in listdir(self.storage_dir) if isfile(join(self.storage_dir, f))]
+
+        for file_key in files_to_upload:
+            load_file_then_move(file_key, self.target_collection)
+
+        remove_duplicates_from_collection(self.target_collection, 'ad_id')
+
+
     def get_olx_data(self):
         """
         This function should fetch data from olx and write it to a file
@@ -268,9 +284,11 @@ class OLXScrape():
         # Second, I will set 2 cars to fetch in a list, just for test purposes
         # Finally, I will set it to fetch all cars for FIPE or a specifc one if the args say so
         car_model_list = list(self.tabela_fipe_df.modelo_code.unique())
+        active_id_list = []
 
         for car_index, car_model in enumerate(car_model_list):
-            if car_index >= 19:
+            # Leaving this dummy IF statement behind as I often use it to fech only a specific car
+            if True: #car_index >= 19:
                 car_model = get_car_model_code_fixed(car_model.lower())
                 car_brand = get_brand_from_model(car_model).lower()
 
@@ -278,6 +296,8 @@ class OLXScrape():
 
                 ad_info_list = self.get_page_ad_info(car_brand, car_model, page_range)
                 print('LEN AD INFO LIST', len(ad_info_list))
+
+                active_id_list += self.get_active_id_list(ad_info_list)
 
                 pages_to_fetch_list = self.get_pages_to_fetch(ad_info_list)
                 print('LEN PAGES TO FETCH LIST', len(pages_to_fetch_list))
@@ -297,7 +317,15 @@ class OLXScrape():
                                                                             self.file_date)
                 old_data_df.to_csv(output_key , index=False)
 
+        pd.DataFrame(active_id_list).to_csv('active_id.csv')
+        active_id_db_cleanup(self.target_collection, active_id_list)
+        self.run_olx_ingest()
+
 
 if __name__ == "__main__":
-    olx_scrape = OLXScrape()
+    DAYS_TO_FETCH = 30
+    if len(sys.argv) > 1:
+        DAYS_TO_FETCH = sys.argv[1]
+
+    olx_scrape = OLXScrape(DAYS_TO_FETCH)
     olx_scrape.get_olx_data()
