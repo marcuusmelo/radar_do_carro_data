@@ -15,15 +15,16 @@ from os import listdir
 from os.path import isfile, join
 
 from general_db_utils import load_file_then_move, remove_duplicates_from_collection, \
-                             active_id_db_cleanup
+                             active_id_db_cleanup, repair_db
 from general_car_functions import get_car_power, get_car_transmission, \
                                   get_car_model_code_fixed, get_brand_from_model
 from fipe_api_fetch import get_fipe_table
+from car_leads import get_car_leads
 
 
 class OLXScrape():
 
-    def __init__(self, days_to_fetch=30):
+    def __init__(self, days_to_fetch=30, car_start_index=0):
         keepalive_handler = HTTPHandler()
         opener = urllib2.build_opener(keepalive_handler)
         urllib2.install_opener(opener)
@@ -32,7 +33,9 @@ class OLXScrape():
 
         self.target_collection = 'radar_do_carro_main_caraddata'
 
+        self.car_start_index = int(car_start_index)
         self.days_to_fetch = int(days_to_fetch)
+        #self.move_files = self.days_to_fetch > 30
 
         self.tabela_fipe_df = pd.read_csv(fipe_path, dtype=str)
         self.model_list_fipe = [x.upper() for x in self.tabela_fipe_df['modelo_nome'].tolist()]
@@ -160,7 +163,7 @@ class OLXScrape():
 
 
     def get_phone_number(self):
-        return self.driver.find_element_by_class_name('sc-fYiAbW').text
+        return self.driver.find_element_by_class_name('sc-fOKMvo').text
 
 
     def get_fipe_price(self, marca, modelo_code, modelo_nome, ano, potencia, transm):
@@ -210,7 +213,7 @@ class OLXScrape():
 
                 st4_2 = time.time()
                 self.driver.get(ad_link)
-                button = self.driver.find_element_by_class_name('sc-krvtoX')
+                button = self.driver.find_element_by_class_name('sc-dUjcNx')
                 button.click()
 
                 ad_soup = BeautifulSoup(self.driver.page_source, 'html.parser')
@@ -271,7 +274,7 @@ class OLXScrape():
         files_to_upload = [join(self.storage_dir, f) for f in listdir(self.storage_dir) if isfile(join(self.storage_dir, f))]
 
         for file_key in files_to_upload:
-            load_file_then_move(file_key, self.target_collection)
+            load_file_then_move(file_key, self.target_collection, move_files=False)
 
         remove_duplicates_from_collection(self.target_collection, 'ad_id')
 
@@ -288,7 +291,7 @@ class OLXScrape():
 
         for car_index, car_model in enumerate(car_model_list):
             # Leaving this dummy IF statement behind as I often use it to fech only a specific car
-            if True: #car_index >= 19:
+            if car_index >= self.car_start_index:
                 car_model = get_car_model_code_fixed(car_model.lower())
                 car_brand = get_brand_from_model(car_model).lower()
 
@@ -320,12 +323,18 @@ class OLXScrape():
         pd.DataFrame(active_id_list).to_csv('active_id.csv')
         active_id_db_cleanup(self.target_collection, active_id_list)
         self.run_olx_ingest()
+        repair_db()
+        get_car_leads()
 
 
 if __name__ == "__main__":
     DAYS_TO_FETCH = 30
-    if len(sys.argv) > 1:
+    CAR_START_INDEX = 0
+    if len(sys.argv) > 2:
+        DAYS_TO_FETCH = sys.argv[1]
+        CAR_START_INDEX = int(sys.argv[2])
+    elif len(sys.argv) > 1:
         DAYS_TO_FETCH = sys.argv[1]
 
-    olx_scrape = OLXScrape(DAYS_TO_FETCH)
+    olx_scrape = OLXScrape(DAYS_TO_FETCH, CAR_START_INDEX)
     olx_scrape.get_olx_data()

@@ -16,7 +16,7 @@ def get_heroku_db():
     return heroku_db
 
 
-def load_file_then_move(upload_key, collection):
+def load_file_then_move(upload_key, collection, move_files=True):
     """
     upload key will have the format:
     /Users/name/folder/20190421_adsource_upload/filename.csv
@@ -30,7 +30,8 @@ def load_file_then_move(upload_key, collection):
     upload_command_final = base_upload_command.format(collection, username, password, upload_key)
     subprocess.call(upload_command_final.split())
 
-    move(upload_key, loaded_key)
+    if move_files:
+        move(upload_key, loaded_key)
 
     return loaded_key
 
@@ -74,3 +75,8 @@ def active_id_db_cleanup(target_collection, active_id_list):
     ids_to_remove = [x['_id'] for x in list(cursor)]
 
     heroku_db[target_collection].remove({"_id": {"$in": ids_to_remove}})
+
+
+def repair_db():
+    heroku_db = get_heroku_db()
+    heroku_db.command('repairDatabase')
