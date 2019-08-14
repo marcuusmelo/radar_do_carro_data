@@ -109,9 +109,13 @@ class OLXScrape():
 
     def get_page_ad_info(self, car_brand, car_model, page_range):
         ad_info_list = []
-        for page_number in range(page_range):
+        for page_number in range(1, page_range + 1):
             model_olx_url = self.base_olx_url.format(car_brand, car_model, str(page_number))
+            #if page_number == 1:
+            #    model_olx_url = model_olx_url.replace('&o=1', '')
 
+            #print model_olx_url
+            #self.driver.get(model_olx_url) # you can use this to check the page using selenium
             page = urllib2.urlopen(model_olx_url)
             soup = BeautifulSoup(page, 'html.parser')
 
@@ -217,7 +221,7 @@ class OLXScrape():
                 button.click()
 
                 ad_soup = BeautifulSoup(self.driver.page_source, 'html.parser')
-                print('Soup time', time.time() - st4_2)
+                #print('Soup time', time.time() - st4_2)
 
                 ad_details = ad_soup.find('script', attrs={'type':'application/ld+json'})
 
@@ -259,7 +263,7 @@ class OLXScrape():
                 ]
 
                 time.sleep(randint(1, 2))
-                print('GET_AD_DETAILS TIME', time.time() - st4_1)
+                #print('GET_AD_DETAILS TIME', time.time() - st4_1)
                 print details_formatted
 
                 olx_data.append(details_formatted)
@@ -286,7 +290,9 @@ class OLXScrape():
         # First, I will set a specific car to fetch, just for test purposes
         # Second, I will set 2 cars to fetch in a list, just for test purposes
         # Finally, I will set it to fetch all cars for FIPE or a specifc one if the args say so
-        car_model_list = list(self.tabela_fipe_df.modelo_code.unique())
+        car_model_list = ['GOL', 'UP', 'ONIX', 'HB20S', 'HB20', 'FIESTA', 'SANDERO', 'KA',  'CIVIC',  'COROLLA',  'UNO']
+        #car_model_list = list(self.tabela_fipe_df.modelo_code.unique())
+
         active_id_list = []
 
         for car_index, car_model in enumerate(car_model_list):
