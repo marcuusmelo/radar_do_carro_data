@@ -167,7 +167,7 @@ class OLXScrape():
 
 
     def get_phone_number(self):
-        return self.driver.find_element_by_class_name('sc-fOKMvo').text
+        return self.driver.find_element_by_class_name('sc-clNaTc').text
 
 
     def get_fipe_price(self, marca, modelo_code, modelo_nome, ano, potencia, transm):
@@ -217,7 +217,7 @@ class OLXScrape():
 
                 st4_2 = time.time()
                 self.driver.get(ad_link)
-                button = self.driver.find_element_by_class_name('sc-dUjcNx')
+                button = self.driver.find_element_by_class_name('sc-fQejPQ')
                 button.click()
 
                 ad_soup = BeautifulSoup(self.driver.page_source, 'html.parser')
