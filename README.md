@@ -1,4 +1,4 @@
-###### This code is part of a personal project called Car Dealer, where I used python to scrape car ads data from OLX so I could easily find the best value used cars in my area and resell them
+###### This code is part of a personal project called Radar do Carro, where I used python to scrape car ads data from OLX so I could easily find the best value used cars in my area and resell them
 
 
 # PROJETO: Radar do Carro
