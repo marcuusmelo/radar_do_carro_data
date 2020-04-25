@@ -1,4 +1,8 @@
-# PROJETO: Car Dealer Brazil
+###### This code is part of a personal project called Car Dealer, where I used python to scrape car ads data from OLX so I could easily find the best value used cars in my area and resell them
+
+
+# PROJETO: Radar do Carro
+
 
 ### Objetivo
 Software para automação de criação de leads para compra de carros através dos canais OLX [Mercado Livre, Web Motors, etc a adicionar]
